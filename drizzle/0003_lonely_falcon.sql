@@ -1,1 +1,0 @@
-ALTER TABLE `subscriptions` ADD `platform` varchar(191);
