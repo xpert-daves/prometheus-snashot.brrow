@@ -1,0 +1,1647 @@
+@import "tailwindcss";
+
+/*
+ * Phone layout of the quote app. Custom variants sort after every built-in
+ * variant, so `phone:x` beats `sm:`/`min-[...]:` classes below 48rem and can
+ * never apply at md+ (unlike `max-md:`, which loses to `sm:` from 640–767px).
+ */
+@custom-variant phone (@media (width < 48rem));
+
+
+
+:root {
+  --background: #090a0b;
+  --foreground: #f7f4ed;
+  --card-bg: #131416;
+  /* Homepage warm-industrial section system (below hero) */
+  --hi-bg-0: #0b0c0d;
+  --hi-bg-1: #111214;
+  --hi-bg-2: #171513;
+  --hi-surface: #17181a;
+  --hi-border: #303236;
+  --accent: #ff7a1a;
+  --accent-hover: #ff943f;
+  --accent-light: #ffad69;
+  --accent-dark: #8f4407;
+  --accent-contrast: #0d1117;
+  --accent-glow-rgb: 242 121 15;
+  --hero-cta-gradient: linear-gradient(135deg, #ff9a45 0%, #ff7412 52%, #e65f00 100%);
+  --hi-accent-soft: rgb(var(--accent-glow-rgb) / 0.12);
+  --hi-accent-strong: rgb(var(--accent-glow-rgb) / 0.2);
+  --brand-spur: var(--accent-dark);
+  --brand-spur-lift: var(--accent);
+  --brand-spur-soft: var(--accent-light);
+  --primary: var(--accent);
+  --primary-hover: var(--accent-hover);
+  --primary-strong: var(--accent-dark);
+  --secondary: #3B82F6;
+  --muted: #6B7280;
+  --border-color: #30363D;
+  --input-bg: #1F2937;
+  --text-muted: #9CA3AF;
+  --font-body: var(--font-inter, Inter, "Avenir Next", Avenir, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+  --font-heading: var(--font-oswald, Oswald, "Avenir Next", Avenir, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+  --font-franklin: var(--font-body);
+  --font-geist-sans: var(--font-franklin);
+  --font-geist-mono: var(--font-plex-mono, ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace);
+  --font-display: var(--font-alfa-slab, "Alfa Slab One", Georgia, serif);
+  --motif-hairline: rgb(255 255 255 / 0.14);
+  --motif-hairline-strong: rgb(255 255 255 / 0.3);
+  --motif-ink: rgb(255 255 255 / 0.62);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-amber-50: color-mix(in srgb, var(--accent-light) 9%, white);
+  --color-amber-100: color-mix(in srgb, var(--accent-light) 20%, white);
+  --color-amber-200: color-mix(in srgb, var(--accent-light) 38%, white);
+  --color-amber-300: color-mix(in srgb, var(--accent-light) 68%, white);
+  --color-amber-400: var(--accent-light);
+  --color-amber-500: var(--accent);
+  --color-amber-600: var(--accent-hover);
+  --color-amber-700: var(--accent-dark);
+  --color-amber-800: color-mix(in srgb, var(--accent-dark) 82%, black);
+  --color-amber-900: color-mix(in srgb, var(--accent-dark) 60%, black);
+  --color-amber-950: color-mix(in srgb, var(--accent-dark) 42%, black);
+  --font-sans: var(--font-body);
+  --font-body: var(--font-inter, Inter, "Avenir Next", Avenir, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+  --font-heading: var(--font-oswald, Oswald, "Avenir Next", Avenir, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+  --font-mono: var(--font-geist-mono);
+}
+@layer base {
+  html {
+    font-family: var(--font-body);
+    --color-primary: var(--primary);
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl font-bold mb-6 leading-tight;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-semibold mb-5 leading-snug;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl font-semibold mb-4 leading-snug;
+  }
+
+  input,
+  textarea,
+  select {
+    @apply px-4 py-3 mb-4 rounded-md;
+  }
+
+  select {
+    color: inherit;
+    background-color: inherit;
+  }
+
+  select option,
+  select optgroup {
+    color: inherit;
+    background-color: inherit;
+  }
+
+  button {
+    @apply active:scale-95 transition-transform;
+  }
+}
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  overflow-x: clip;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgb(var(--accent-glow-rgb) / 0.42);
+  color: white;
+}
+
+:is(
+  a[href],
+  button,
+  input,
+  select,
+  textarea,
+  summary,
+  [tabindex]:not([tabindex="-1"])
+):focus-visible {
+  outline: 3px solid white;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px #111827;
+}
+
+#main {
+  scroll-margin-top: 5rem;
+}
+
+#main:focus {
+  outline: none;
+}
+
+body:has(.admin-root) [data-site-chrome="site"] {
+  display: none;
+}
+
+/* Unified button primitives */
+.btn {
+  @apply inline-flex items-center justify-center rounded-full font-semibold transition-all duration-200 outline-none active:scale-[0.98];
+  @apply focus-visible:ring-2 focus-visible:ring-amber-400/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black;
+  font-family: var(--font-body);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.brand-hero,
+.brand-heading {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.brand-hero {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 0.98;
+}
+
+.brand-heading {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+}
+
+.brand-subheading {
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.18;
+  text-wrap: balance;
+}
+
+.brand-label {
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.brand-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.brand-button {
+  font-family: var(--font-body);
+  font-weight: 500;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.btn-sm { @apply text-sm px-3 py-2; }
+.btn-md { @apply text-base px-5 py-3; }
+.btn-lg { @apply text-lg px-6 py-3; }
+
+.btn-primary {
+  background: var(--hero-cta-gradient);
+  color: var(--accent-contrast);
+  box-shadow:
+    0 18px 38px -22px rgb(var(--accent-glow-rgb) / 0.92),
+    inset 0 1px 0 rgb(255 255 255 / 0.38);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  @apply bg-blue-500 text-white shadow-sm hover:bg-blue-600;
+}
+
+.btn-outline {
+  border: 1px solid rgb(255 255 255 / 0.25);
+  background: rgb(9 10 11 / 0.28);
+  color: rgb(255 255 255 / 0.9);
+}
+
+.btn-outline:hover {
+  border-color: color-mix(in srgb, var(--accent-light) 72%, transparent);
+  background: rgb(255 255 255 / 0.08);
+  color: white;
+}
+
+.btn-ghost {
+  @apply text-white/90 hover:text-white hover:bg-white/5;
+}
+
+.hero-primary-cta {
+  background: var(--hero-cta-gradient);
+  color: var(--accent-contrast);
+  box-shadow:
+    0 18px 38px -18px rgb(var(--accent-glow-rgb) / 0.9),
+    inset 0 1px 0 rgb(255 255 255 / 0.35);
+}
+
+.hero-primary-cta:hover {
+  box-shadow:
+    0 24px 46px -20px rgb(var(--accent-glow-rgb) / 0.95),
+    inset 0 1px 0 rgb(255 255 255 / 0.45);
+  filter: brightness(1.08);
+}
+
+.hero-accent-text {
+  filter: drop-shadow(0 8px 24px rgb(var(--accent-glow-rgb) / 0.42));
+}
+
+.hero-proof-icon {
+  color: color-mix(in srgb, var(--accent-light) 90%, white);
+  filter: drop-shadow(0 0 16px rgb(var(--accent-glow-rgb) / 0.42));
+}
+
+.hero-trust-item::before {
+  content: "";
+  height: 0.375rem;
+  width: 0.375rem;
+  flex: 0 0 auto;
+  border-radius: 9999px;
+  background: var(--accent-light);
+  box-shadow: 0 0 14px rgb(var(--accent-glow-rgb) / 0.75);
+}
+
+/* Carpentry/shop-drawing motif system */
+.brand-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.motif-spec {
+  font-family: var(--font-geist-mono);
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Drafting corner ticks for cards and frames */
+.motif-corners {
+  position: relative;
+}
+
+.motif-corners::before,
+.motif-corners::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-repeat: no-repeat;
+}
+
+.motif-corners::before {
+  background-image:
+    linear-gradient(var(--motif-hairline-strong), var(--motif-hairline-strong)),
+    linear-gradient(var(--motif-hairline-strong), var(--motif-hairline-strong)),
+    linear-gradient(var(--motif-hairline-strong), var(--motif-hairline-strong)),
+    linear-gradient(var(--motif-hairline-strong), var(--motif-hairline-strong));
+  background-size: 14px 1px, 1px 14px, 14px 1px, 1px 14px;
+  background-position: left top, left top, right bottom, right bottom;
+}
+
+.motif-corners::after {
+  background-image:
+    linear-gradient(var(--motif-hairline-strong), var(--motif-hairline-strong)),
+    linear-gradient(var(--motif-hairline-strong), var(--motif-hairline-strong)),
+    linear-gradient(var(--motif-hairline-strong), var(--motif-hairline-strong)),
+    linear-gradient(var(--motif-hairline-strong), var(--motif-hairline-strong));
+  background-size: 14px 1px, 1px 14px, 14px 1px, 1px 14px;
+  background-position: right top, right top, left bottom, left bottom;
+}
+
+/* Faint blueprint grid backdrop */
+.motif-grid {
+  background-image:
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 48px);
+}
+
+/* Stroke draw-in for motif SVGs (paths must set pathLength=1) */
+.motif-draw path,
+.motif-draw line,
+.motif-draw polyline,
+.motif-draw circle,
+.motif-draw rect {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.9s var(--motif-draw-ease, cubic-bezier(0.16, 1, 0.3, 1));
+  transition-delay: calc(var(--draw-index, 0) * 90ms);
+}
+
+.motif-draw[data-drawn="true"] path,
+.motif-draw[data-drawn="true"] line,
+.motif-draw[data-drawn="true"] polyline,
+.motif-draw[data-drawn="true"] circle,
+.motif-draw[data-drawn="true"] rect {
+  stroke-dashoffset: 0;
+}
+
+.motif-draw text {
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  transition-delay: calc(var(--draw-index, 0) * 90ms);
+}
+
+.motif-draw[data-drawn="true"] text {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  button:active,
+  .btn:active,
+  .btn:hover,
+  .hero-primary-cta:hover {
+    transform: none !important;
+  }
+
+  .motif-draw path,
+  .motif-draw line,
+  .motif-draw polyline,
+  .motif-draw circle,
+  .motif-draw rect {
+    transition: none;
+    stroke-dashoffset: 0;
+  }
+
+  .motif-draw text {
+    transition: none;
+    opacity: 1;
+  }
+}
+
+/* Quote tool: step content slides in like a fresh sheet on the board */
+@keyframes quote-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* backwards, not both: a held final keyframe keeps an identity transform on the
+   step, which makes it the containing block for any position:fixed descendant. */
+.quote-step-enter {
+  animation: quote-step-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote-step-enter {
+    animation: none;
+  }
+}
+
+/*
+ * Home "From first text to build day": claim tickets taped to charcoal steel shed siding.
+ * Kept in the components layer so Tailwind utilities can still override them.
+ */
+@layer components {
+  /*
+   * R-panel siding run horizontally, the way Shed210 hangs it: one raised rib per repeat with two
+   * stiffening beads on the flat between ribs. Each rib is lit on its top edge and shadowed below.
+   */
+  .job-wall {
+    --ticket-ink: #1f1912;
+    --ticket-paper: #fffdf7;
+    --wall: #2a2d30;
+    background-color: var(--wall);
+    background-image:
+      linear-gradient(180deg, rgb(255 255 255 / 0.05), transparent 28%, rgb(0 0 0 / 0.24)),
+      repeating-linear-gradient(
+        180deg,
+        rgb(255 255 255 / 0.1) 0 1px,
+        rgb(255 255 255 / 0.04) 1px 13px,
+        rgb(0 0 0 / 0.4) 13px 15px,
+        transparent 15px 44px,
+        rgb(255 255 255 / 0.045) 44px 45px,
+        rgb(0 0 0 / 0.2) 45px 46px,
+        transparent 46px 74px,
+        rgb(255 255 255 / 0.045) 74px 75px,
+        rgb(0 0 0 / 0.2) 75px 76px,
+        transparent 76px 104px
+      );
+  }
+
+  /* A box-shadow rather than drop-shadow(): a filter here paints its shadow through
+     the masked tear-line notches as dark discs that spill past the ticket edges. */
+  .job-ticket-wrap {
+    position: relative;
+    border-radius: 6px;
+    box-shadow: 0 14px 22px -8px rgb(0 0 0 / 0.6), 0 2px 4px rgb(0 0 0 / 0.35);
+  }
+
+  /* Masking tape holding the ticket to the wall. */
+  .job-ticket-wrap::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: -13px;
+    left: 50%;
+    width: 92px;
+    height: 26px;
+    translate: -50% 0;
+    rotate: -2.5deg;
+    background: rgb(241 231 205 / 0.92);
+    clip-path: polygon(
+      0 10%, 3% 0, 6% 12%, 9% 2%, 91% 0, 94% 10%, 97% 1%, 100% 12%,
+      100% 90%, 97% 100%, 94% 88%, 91% 99%, 9% 100%, 6% 90%, 3% 99%, 0 88%
+    );
+  }
+
+  .job-ticket-wrap:nth-child(2)::before {
+    rotate: 2deg;
+  }
+
+  /* Ink stub over card stock, with a notch cut on each side at the tear line. */
+  .job-ticket {
+    --stub-h: 5rem;
+    --notch: 11px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: 6px;
+    background: var(--ticket-paper);
+    -webkit-mask:
+      radial-gradient(circle var(--notch) at 0 var(--stub-h), transparent 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--notch) at 100% var(--stub-h), transparent 98%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle var(--notch) at 0 var(--stub-h), transparent 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--notch) at 100% var(--stub-h), transparent 98%, #000) right / 51% 100% no-repeat;
+  }
+
+  /* Perforation dots along the tear line. */
+  .job-ticket-stub {
+    height: var(--stub-h);
+    flex-shrink: 0;
+    border-radius: 6px 6px 0 0;
+    background:
+      radial-gradient(circle at 50% 100%, var(--ticket-paper) 0 2px, transparent 2.5px) center bottom / 12px 100% repeat-x,
+      var(--ticket-ink);
+  }
+
+  @media (width >= 40rem) {
+    .job-ticket {
+      --stub-h: 6rem;
+    }
+  }
+
+  @media (width >= 64rem) {
+    .job-ticket-wrap {
+      transform-origin: 50% 0;
+      rotate: var(--ticket-tilt, 0deg);
+    }
+  }
+}
+
+/* Shared interior-page system */
+.interior-page {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(70rem 32rem at 85% -8%, rgb(var(--accent-glow-rgb) / 0.13), transparent 64%),
+    radial-gradient(48rem 28rem at -10% 22%, rgb(255 255 255 / 0.045), transparent 70%),
+    var(--hi-bg-0);
+}
+
+.interior-page::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.018) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(to bottom, black, transparent 42rem);
+}
+
+.interior-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 2rem;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 0.075), transparent 38%),
+    linear-gradient(120deg, #17181a, #0c0d0f);
+  box-shadow:
+    0 32px 90px -56px rgb(0 0 0 / 0.95),
+    inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+
+.interior-hero::after {
+  position: absolute;
+  top: -8rem;
+  right: -7rem;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 9999px;
+  pointer-events: none;
+  content: "";
+  background: rgb(var(--accent-glow-rgb) / 0.16);
+  filter: blur(72px);
+}
+
+.interior-card {
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 1.5rem;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 0.055), transparent 44%),
+    var(--hi-surface);
+  box-shadow:
+    0 24px 70px -48px rgb(0 0 0 / 0.95),
+    inset 0 1px 0 rgb(255 255 255 / 0.055);
+}
+
+.interior-card-soft {
+  border: 1px solid rgb(255 255 255 / 0.085);
+  border-radius: 1.25rem;
+  background: rgb(255 255 255 / 0.035);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
+}
+
+.interior-link-card {
+  transition:
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 220ms ease,
+    background-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.interior-link-card:hover {
+  transform: translateY(-3px);
+  border-color: rgb(var(--accent-glow-rgb) / 0.42);
+  background-color: rgb(255 255 255 / 0.055);
+  box-shadow: 0 28px 65px -46px rgb(var(--accent-glow-rgb) / 0.5);
+}
+
+.interior-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--accent-light);
+  font-family: var(--font-geist-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.interior-kicker::before {
+  width: 1.8rem;
+  height: 1px;
+  content: "";
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.interior-rule {
+  height: 1px;
+  background: linear-gradient(90deg, rgb(var(--accent-glow-rgb) / 0.7), rgb(255 255 255 / 0.09), transparent);
+}
+
+.legal-copy > section {
+  scroll-margin-top: 6rem;
+  border: 1px solid rgb(255 255 255 / 0.09);
+  border-radius: 1.35rem;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 0.045), transparent 45%),
+    rgb(19 20 22 / 0.88);
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.045);
+}
+
+.legal-copy > section h2 {
+  margin-bottom: 0.85rem;
+  color: white;
+}
+
+.legal-copy a {
+  color: var(--accent-light);
+  text-underline-offset: 0.2em;
+  transition: color 160ms ease;
+}
+
+.legal-copy a:hover {
+  color: white;
+}
+
+/* Mobile navigation panel: short fade/slide on open; hidden attribute handles close. */
+@keyframes mobile-nav-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.mobile-nav-panel[data-state='open'] {
+  animation: mobile-nav-in 160ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-panel[data-state='open'] {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Quote app on phones (< 48rem): iOS-style skin.
+   - `qm-*` utilities are only ever applied through the `phone:` variant (or
+     `phone:hover:` etc.), so they never reach desktop.
+   - Tokens live on [data-quote-app]; desktop never reads them.
+   - The unlayered block at the end sits in a phone media query scoped to
+     [data-quote-app]. It rolls back the unlayered brand classes with
+     `revert-layer`, so `phone:` utilities can restyle those elements.
+   ========================================================================== */
+
+[data-quote-app] {
+  --qm-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --qm-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --qm-font-rounded: ui-rounded, -apple-system, BlinkMacSystemFont, "SF Pro Rounded", system-ui, sans-serif;
+  --qm-bg: #0a0a0b;
+  --qm-group: rgb(255 255 255 / 0.07);
+  --qm-group-pressed: rgb(255 255 255 / 0.13);
+  --qm-sep: rgb(255 255 255 / 0.12);
+  --qm-label: #ffffff;
+  --qm-label-2: rgb(235 235 245 / 0.64);
+  /* Decorative / disabled only: ~2.5:1 on the background. */
+  --qm-label-3: rgb(235 235 245 / 0.34);
+  --qm-fill: rgb(118 118 128 / 0.28);
+  --qm-fill-2: rgb(118 118 128 / 0.18);
+  --qm-thumb: rgb(255 255 255 / 0.2);
+  --qm-glass-bg: rgb(30 31 34 / 0.62);
+  --qm-glass-edge: inset 0 0.5px 0 rgb(255 255 255 / 0.24), inset 0 0 0 0.5px rgb(255 255 255 / 0.09);
+  --qm-accent-fill: linear-gradient(180deg, #ff8f3d 0%, #ff7a1a 55%, #f26b0c 100%);
+  --qm-accent-ink: #1a0d02;
+  --qm-success: #30d158;
+  --qm-danger: #ff453a;
+  --qm-warning: #ffd60a;
+  --qm-radius-group: 22px;
+  --qm-radius-tile: 20px;
+  --qm-radius-control: 12px;
+  --qm-ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --qm-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --qm-ease-soft-bounce: cubic-bezier(0.34, 1.3, 0.64, 1);
+  --qm-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --qm-preview-h: 15rem;
+  /* Sticky nav (52px row + 10px progress) and floating bar (52px + 12px pad + 12px gap). */
+  --qm-nav-h: calc(env(safe-area-inset-top, 0px) + 62px);
+  --qm-bar-h: calc(env(safe-area-inset-bottom, 0px) + 88px);
+  --qm-gutter: 1rem;
+}
+
+@supports (transition-timing-function: linear(0, 1)) {
+  [data-quote-app] {
+    /* UIKit-like critically damped spring (settles without a hard stop). */
+    --qm-ease-spring: linear(0, 0.0175, 0.0657 4.2%, 0.2534 9%, 0.5048 14.6%, 0.7124 20.4%, 0.8564 26.6%, 0.9435 33.3%, 0.9873 40.4%, 1.0049 48.5%, 1.0083 58.2%, 1.0034 75.4%, 1);
+  }
+}
+
+/* ---- Typography (iOS text styles) ---------------------------------------- */
+@utility qm-large-title {
+  font-family: var(--qm-font-display);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 41px;
+  letter-spacing: 0.011em;
+  text-transform: none;
+}
+@utility qm-title1 {
+  font-family: var(--qm-font-display);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 34px;
+  letter-spacing: 0.012em;
+  text-transform: none;
+}
+@utility qm-title2 {
+  font-family: var(--qm-font-display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: -0.012em;
+  text-transform: none;
+}
+@utility qm-title3 {
+  font-family: var(--qm-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 25px;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+@utility qm-headline {
+  font-family: var(--qm-font);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: -0.025em;
+  text-transform: none;
+}
+@utility qm-body {
+  font-family: var(--qm-font);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.025em;
+  text-transform: none;
+}
+@utility qm-callout {
+  font-family: var(--qm-font);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+@utility qm-subhead {
+  font-family: var(--qm-font);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.015em;
+  text-transform: none;
+}
+@utility qm-footnote {
+  font-family: var(--qm-font);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: -0.005em;
+  text-transform: none;
+}
+@utility qm-caption {
+  font-family: var(--qm-font);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+/* Big rounded numerals for prices and counters. */
+@utility qm-numeral {
+  font-family: var(--qm-font-rounded);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+
+/* ---- Surfaces ------------------------------------------------------------ */
+@utility qm-glass {
+  background-color: var(--qm-glass-bg);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  backdrop-filter: blur(22px) saturate(180%);
+  box-shadow: var(--qm-glass-edge), 0 12px 32px -14px rgb(0 0 0 / 0.7);
+}
+
+/* Inset grouped card. Direct children are rows; hairlines inset like iOS.
+   Add `data-qm-skip` to a direct child that is not a visible row. */
+@utility qm-group {
+  position: relative;
+  overflow: clip;
+  border: 0;
+  border-radius: var(--qm-radius-group);
+  background-color: var(--qm-group);
+  box-shadow: inset 0 0.5px 0 rgb(255 255 255 / 0.06);
+  padding: 0;
+
+  & > * {
+    position: relative;
+  }
+
+  & > :not([data-qm-skip]) ~ :not([data-qm-skip])::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 1rem;
+    height: 1px;
+    content: "";
+    background-color: var(--qm-sep);
+    transform: scaleY(0.5);
+    transform-origin: top;
+    pointer-events: none;
+  }
+}
+
+/* A row inside qm-group: 52px min, 16px insets, body text, pressed tint. */
+@utility qm-row {
+  --qm-focus-offset: -2px;
+  display: flex;
+  min-height: 52px;
+  width: 100%;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  padding: 0.6875rem 1rem;
+  color: var(--qm-label);
+  font-family: var(--qm-font);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.025em;
+  text-align: left;
+  text-transform: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  transition: background-color 0.2s ease;
+
+  &:active {
+    scale: 1;
+    background-color: var(--qm-group-pressed);
+    transition-duration: 0.05s;
+  }
+}
+
+/* Section header / footer around a grouped card. */
+@utility qm-section-header {
+  display: block;
+  margin: 0 0 0.4375rem;
+  padding: 0 1rem;
+  color: var(--qm-label-2);
+  font-family: var(--qm-font);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+@utility qm-section-footer {
+  display: block;
+  margin: 0.5rem 0 0;
+  padding: 0 1rem;
+  color: var(--qm-label-2);
+  font-family: var(--qm-font);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: -0.005em;
+  text-transform: none;
+}
+
+/* Selectable card (doors, roof profiles, windows). State keys on aria-pressed. */
+@utility qm-tile {
+  position: relative;
+  border: 0;
+  border-radius: var(--qm-radius-tile);
+  background-color: var(--qm-group);
+  color: var(--qm-label);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+  font-family: var(--qm-font);
+  text-transform: none;
+  letter-spacing: -0.01em;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  transition:
+    scale 0.42s var(--qm-ease-bounce),
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+
+  &:active {
+    scale: 0.97;
+    transition: scale 0.09s ease-out 0.06s;
+  }
+
+  &[aria-pressed="true"] {
+    background-color: color-mix(in srgb, var(--accent) 15%, rgb(255 255 255 / 0.05));
+    box-shadow:
+      inset 0 0 0 2px var(--accent),
+      0 10px 28px -14px rgb(var(--accent-glow-rgb) / 0.75);
+    color: var(--qm-label);
+  }
+}
+
+/* ---- Buttons ------------------------------------------------------------- */
+/* Press feedback uses the `scale` property: the base layer gives every button
+   `active:scale-95`, which also sets `scale`, so this replaces it instead of
+   compounding with a transform. */
+@utility qm-press {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  transition: scale 0.42s var(--qm-ease-bounce), opacity 0.2s ease, background-color 0.2s ease, filter 0.2s ease;
+
+  &:active {
+    scale: 0.96;
+    transition: scale 0.09s ease-out 0.04s;
+  }
+}
+
+@utility qm-capsule {
+  display: inline-flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 0;
+  border-radius: 9999px;
+  padding: 0 1.5rem;
+  font-family: var(--qm-font);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: -0.025em;
+  text-transform: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  transition: scale 0.42s var(--qm-ease-bounce), filter 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+
+  &:active {
+    scale: 0.97;
+    filter: brightness(0.92);
+    transition: scale 0.09s ease-out, filter 0.09s ease-out;
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    scale: 1;
+  }
+}
+
+@utility qm-capsule-accent {
+  background: var(--qm-accent-fill);
+  color: var(--qm-accent-ink);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.38),
+    inset 0 -1px 0 rgb(0 0 0 / 0.12),
+    0 12px 26px -12px rgb(var(--accent-glow-rgb) / 0.85);
+}
+
+@utility qm-capsule-glass {
+  background-color: var(--qm-glass-bg);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  backdrop-filter: blur(22px) saturate(180%);
+  box-shadow: var(--qm-glass-edge);
+  color: var(--qm-label);
+}
+
+@utility qm-capsule-tinted {
+  background-color: rgb(var(--accent-glow-rgb) / 0.16);
+  color: var(--accent-light);
+  box-shadow: inset 0 0 0 0.5px rgb(var(--accent-glow-rgb) / 0.3);
+}
+
+/* Round 44px glass icon button (nav bar). iOS 26 glass grows on press. */
+@utility qm-circle {
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 9999px;
+  padding: 0;
+  color: var(--qm-label);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  transition: scale 0.42s var(--qm-ease-bounce), opacity 0.2s ease, filter 0.2s ease, background-color 0.2s ease;
+
+  &:active {
+    scale: 1.08;
+    filter: brightness(1.3);
+    transition: scale 0.12s ease-out, filter 0.12s ease-out;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    scale: 1;
+    filter: none;
+  }
+}
+
+/* ---- Segmented control ---------------------------------------------------
+   Track: `qm-seg` + style="--qm-seg-count:N; --qm-seg-index:i".
+   Thumb: an aria-hidden child with `qm-seg-thumb` (only when something is
+   selected). Items: `qm-seg-item` buttons with aria-pressed. */
+@utility qm-seg {
+  position: relative;
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: 0;
+  margin-inline: 0;
+  border: 0;
+  border-radius: 9999px;
+  background-color: var(--qm-fill);
+  padding: 2px;
+  overflow: visible;
+}
+@utility qm-seg-thumb {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  width: calc((100% - 4px) / var(--qm-seg-count, 2));
+  border-radius: 9999px;
+  background-color: var(--qm-thumb);
+  box-shadow: 0 3px 8px rgb(0 0 0 / 0.28), inset 0 0.5px 0 rgb(255 255 255 / 0.25);
+  transform: translateX(calc(100% * var(--qm-seg-index, 0)));
+  transition: transform 0.36s var(--qm-ease-spring), scale 0.2s ease;
+  pointer-events: none;
+}
+@utility qm-seg-item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 40px;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  padding: 0 0.375rem;
+  color: var(--qm-label-2);
+  font-family: var(--qm-font);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.015em;
+  text-transform: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  transition: color 0.2s ease, scale 0.3s var(--qm-ease-bounce);
+
+  /* Extend the hit area to 44px without growing the track. */
+  &::after {
+    position: absolute;
+    inset: -2px 0;
+    content: "";
+  }
+
+  &[aria-pressed="true"] {
+    color: var(--qm-label);
+    font-weight: 600;
+  }
+
+  &:active {
+    scale: 0.95;
+  }
+}
+
+/* ---- Switch --------------------------------------------------------------
+   `qm-switch`: decorative span (aria-hidden) with data-on="true|false".
+   `qm-switch-input`: a real <input type=checkbox> drawn as a switch. */
+@utility qm-switch {
+  position: relative;
+  display: inline-block;
+  width: 51px;
+  height: 31px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 9999px;
+  background-color: var(--qm-fill);
+  transition: background-color 0.25s ease;
+
+  &::after {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 27px;
+    height: 27px;
+    border-radius: 9999px;
+    content: "";
+    background-color: #fff;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 0.18), 0 3px 1px rgb(0 0 0 / 0.06);
+    transition: transform 0.38s var(--qm-ease-soft-bounce);
+  }
+
+  &[data-on="true"] {
+    background-color: var(--accent);
+  }
+
+  &[data-on="true"]::after {
+    transform: translateX(20px);
+  }
+}
+@utility qm-switch-input {
+  position: relative;
+  width: 51px;
+  height: 31px;
+  flex-shrink: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 9999px;
+  background-color: var(--qm-fill);
+  padding: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  accent-color: var(--accent);
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+
+  &::before {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 27px;
+    height: 27px;
+    border-radius: 9999px;
+    content: "";
+    background-color: #fff;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 0.18), 0 3px 1px rgb(0 0 0 / 0.06);
+    transition: transform 0.38s var(--qm-ease-soft-bounce);
+  }
+
+  &:checked {
+    background-color: var(--accent);
+  }
+
+  &:checked::before {
+    transform: translateX(20px);
+  }
+}
+
+/* Circular iOS checkmark drawn on a real <input type=checkbox> (no added text). */
+@utility qm-check-input {
+  position: relative;
+  display: inline-grid;
+  width: 1.625rem;
+  height: 1.625rem;
+  flex-shrink: 0;
+  place-content: center;
+  margin: 0;
+  border: 1.5px solid rgb(235 235 245 / 0.5);
+  border-radius: 9999px;
+  background-color: transparent;
+  padding: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, scale 0.35s var(--qm-ease-bounce);
+
+  &::before {
+    width: 0.75rem;
+    height: 0.75rem;
+    content: "";
+    background-color: var(--qm-accent-ink);
+    clip-path: polygon(14% 52%, 0 66%, 38% 100%, 100% 22%, 86% 8%, 38% 72%);
+    transform: scale(0);
+    transition: transform 0.3s var(--qm-ease-bounce);
+  }
+
+  &:checked {
+    border-color: var(--accent);
+    background-color: var(--accent);
+  }
+
+  &:checked::before {
+    transform: scale(1);
+  }
+
+  &:active {
+    scale: 0.9;
+  }
+}
+
+/* Small accent badge with a check, popped onto selected tiles. aria-hidden, text-free. */
+@utility qm-check-badge {
+  display: inline-flex;
+  width: 1.375rem;
+  height: 1.375rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: var(--accent);
+  color: var(--qm-accent-ink);
+  box-shadow: 0 4px 10px -2px rgb(var(--accent-glow-rgb) / 0.7);
+}
+
+/* No long-press text selection / callout on a control. */
+@utility qm-no-select {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* ---- Motion utilities (phone: prefix; reduced motion handled below) ------- */
+@utility qm-animate-pop {
+  animation: qm-pop 0.42s var(--qm-ease-bounce) both;
+}
+@utility qm-animate-rise {
+  animation: qm-rise 0.5s var(--qm-ease-spring) both;
+}
+@utility qm-animate-fade {
+  animation: qm-fade 0.3s ease both;
+}
+@utility qm-animate-sheet {
+  animation: qm-sheet-up 0.48s var(--qm-ease-spring) both;
+}
+@utility qm-animate-shake {
+  animation: qm-shake 0.38s ease-out both;
+}
+@utility qm-animate-select {
+  animation: qm-select 0.38s var(--qm-ease-bounce);
+}
+
+@keyframes qm-pop {
+  0% { opacity: 0; transform: scale(0.4); }
+  60% { opacity: 1; transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes qm-rise {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to { opacity: 1; transform: none; }
+}
+/* Website chat panel entrance (ChatPanel). */
+@keyframes chat-in {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes qm-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes qm-sheet-up {
+  from { transform: translate3d(0, calc(100% + 16px), 0); }
+  to { transform: none; }
+}
+@keyframes qm-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(3px); }
+}
+@keyframes qm-select {
+  0% { scale: 1; }
+  35% { scale: 0.95; }
+  100% { scale: 1; }
+}
+@keyframes qm-push-forward {
+  from { opacity: 0; transform: translate3d(28%, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes qm-push-back {
+  from { opacity: 0; transform: translate3d(-28%, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes qm-shimmer {
+  from { transform: translateX(-120%) skewX(-18deg); }
+  to { transform: translateX(260%) skewX(-18deg); }
+}
+@keyframes qm-check-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes qm-ring-out {
+  from { opacity: 0.7; transform: scale(0.6); }
+  to { opacity: 0; transform: scale(1.4); }
+}
+@keyframes qm-confetti {
+  0% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate3d(var(--qm-x, 0px), var(--qm-y, 160px), 0) rotate(var(--qm-r, 360deg)) scale(0.6); }
+}
+@keyframes qm-glow-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@keyframes qm-skeleton {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
+}
+/* Screen push: the covered screen parallaxes 30% and dims (brightness, not
+   opacity, so nothing behind it shows through). */
+@keyframes qm-view-out-forward {
+  to { filter: brightness(0.62); transform: translate3d(-30%, 0, 0); }
+}
+@keyframes qm-view-in-forward {
+  from { transform: translate3d(100%, 0, 0); }
+}
+@keyframes qm-view-out-back {
+  to { transform: translate3d(100%, 0, 0); }
+}
+@keyframes qm-view-in-back {
+  from { filter: brightness(0.62); transform: translate3d(-30%, 0, 0); }
+}
+
+/* ---- Phone-only unlayered rules ------------------------------------------ */
+@media (width < 48rem) {
+  body:has([data-quote-app]) [data-site-chrome="site"] {
+    display: none;
+  }
+
+  body:has([data-quote-app]) {
+    background-color: #0a0a0b;
+  }
+
+  /* --qm-pip-pad: the docked preview tile's height, so focus never lands under it. */
+  html:has([data-quote-app]) {
+    scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 74px + var(--qm-pip-pad, 0px));
+    scroll-padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 100px);
+  }
+
+  [data-quote-app] {
+    min-height: 100dvh;
+    overflow-x: clip;
+    background:
+      radial-gradient(130% 55% at 50% -12%, rgb(var(--accent-glow-rgb) / 0.11), transparent 62%),
+      var(--qm-bg);
+    color: var(--qm-label);
+    color-scheme: dark;
+    font-family: var(--qm-font);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  [data-quote-app]::before {
+    content: none;
+  }
+
+  /* View-transition snapshots cannot blur what is behind them, so the named
+     glass chrome turns near-opaque for the ~450ms of a push instead of flat. */
+  html[data-qm-vt] [data-quote-app] {
+    --qm-glass-bg: rgb(30 31 34 / 0.94);
+  }
+
+  /* Brand type, buttons and surfaces step aside so `phone:` utilities restyle them. */
+  [data-quote-app] :is(.motif-spec, .brand-button, .brand-subheading, .brand-display, .brand-label, .brand-heading, .brand-body, .hero-accent-text) {
+    font-family: revert-layer;
+    font-size: revert-layer;
+    font-weight: revert-layer;
+    line-height: revert-layer;
+    letter-spacing: revert-layer;
+    text-transform: revert-layer;
+    filter: revert-layer;
+  }
+
+  [data-quote-app] :is(.interior-card, .hero-primary-cta, .btn, .btn-sm, .btn-md, .btn-lg, .btn-primary, .btn-outline, .btn-secondary, .btn-ghost),
+  [data-quote-app] :is(.hero-primary-cta, .btn-primary, .btn-outline, .btn-secondary, .btn-ghost):hover {
+    padding: revert-layer;
+    border: revert-layer;
+    border-radius: revert-layer;
+    background: revert-layer;
+    box-shadow: revert-layer;
+    color: revert-layer;
+    font-family: revert-layer;
+    font-size: revert-layer;
+    letter-spacing: revert-layer;
+    text-transform: revert-layer;
+    transform: revert-layer;
+    scale: revert-layer;
+    filter: revert-layer;
+  }
+
+  [data-quote-app] .motif-corners::before,
+  [data-quote-app] .motif-corners::after {
+    content: none;
+  }
+
+  /* 17px text controls: iOS body size, and no zoom on focus. */
+  [data-quote-app] :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+    font-size: 17px;
+    caret-color: var(--accent);
+  }
+
+  [data-quote-app] :is(button, a, input, select, label, summary) {
+    touch-action: manipulation;
+  }
+
+  /* Focus: a 2px accent outline (outline, not box-shadow, so glass shadows
+     cannot cancel it). Beats the global (0,3,0) :focus-visible rule. Controls
+     that fill a clipping group (rows, stepper halves, sheet rows) set
+     --qm-focus-offset: -2px so the ring is drawn inside instead of clipped. */
+  [data-quote-app] :is(a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid var(--accent-light);
+    outline-offset: var(--qm-focus-offset, 2px);
+    box-shadow: none;
+  }
+
+  /* Text fields inside an iOS row show focus on the row (`phone:focus-within:`).
+     The doubled attribute lifts this to (0,4,1), above the (0,4,0) rule above. */
+  [data-quote-app] [data-qm-row-input][data-qm-row-input]:is(input, select, textarea):focus-visible {
+    outline: none;
+  }
+
+  /* The read-only preview must let swipes scroll the page: OrbitControls
+     sets an inline `touch-action: none` on the canvas wrapper even when off. */
+  [data-quote-app] [data-quote-preview] [role="img"],
+  [data-quote-app] [data-quote-preview] [role="img"] * {
+    touch-action: pan-y pinch-zoom !important;
+  }
+
+  /* Live preview height follows the screen; never transitioned (canvas resize). */
+  [data-quote-app] [data-quote-preview] [role="img"] {
+    height: var(--qm-preview-h);
+    border: 0;
+    border-radius: var(--qm-radius-group);
+    box-shadow: none;
+  }
+
+  [data-quote-app][data-step="2"]:not([data-result="true"]) {
+    --qm-preview-h: 9.5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Pushed / popped step screens (CSS fallback when View Transitions are unavailable). */
+    [data-quote-app][data-direction="forward"] .quote-step-enter {
+      animation: qm-push-forward 0.42s var(--qm-ease-spring) backwards;
+    }
+
+    [data-quote-app][data-direction="back"] .quote-step-enter {
+      animation: qm-push-back 0.42s var(--qm-ease-spring) backwards;
+    }
+
+    [data-quote-app][data-direction="none"] .quote-step-enter {
+      animation: none;
+    }
+
+    /* View Transitions push (Safari 18+, Chrome 111+), like a navigation
+       controller: the viewport snapshot (root) is the screen and moves as one
+       opaque layer; the named nav bar and action bar stay put and crossfade.
+       Normal blending: the default plus-lighter crossfade would add the two
+       screens' pixels together where they overlap. */
+    html[data-qm-vt]::view-transition-old(root),
+    html[data-qm-vt]::view-transition-new(root) {
+      mix-blend-mode: normal;
+    }
+
+    html[data-qm-vt="forward"]::view-transition-old(root) {
+      animation: qm-view-out-forward 0.42s cubic-bezier(0.32, 0.72, 0, 1) both;
+    }
+
+    html[data-qm-vt="forward"]::view-transition-new(root) {
+      animation: qm-view-in-forward 0.42s cubic-bezier(0.32, 0.72, 0, 1) both;
+      box-shadow: -10px 0 28px rgb(0 0 0 / 0.5);
+    }
+
+    /* Popping: the leaving screen slides off on top of the one revealed. */
+    html[data-qm-vt="back"]::view-transition-old(root) {
+      z-index: 1;
+      animation: qm-view-out-back 0.42s cubic-bezier(0.32, 0.72, 0, 1) both;
+      box-shadow: -10px 0 28px rgb(0 0 0 / 0.5);
+    }
+
+    html[data-qm-vt="back"]::view-transition-new(root) {
+      animation: qm-view-in-back 0.42s cubic-bezier(0.32, 0.72, 0, 1) both;
+    }
+
+    html[data-qm-vt]::view-transition-group(qm-nav),
+    html[data-qm-vt]::view-transition-group(qm-bar) {
+      animation-duration: 0.3s;
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+    [data-quote-app] {
+      --qm-glass-bg: #17181a;
+      --qm-sep: rgb(255 255 255 / 0.24);
+      --qm-label-2: rgb(235 235 245 / 0.8);
+    }
+
+    [data-quote-app] * {
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
+  }
+}
+
+@media (width < 48rem) and (prefers-reduced-motion: reduce) {
+  [data-quote-app] *,
+  [data-quote-app] *::before,
+  [data-quote-app] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Shed pegboard + hang tags for the home "Why buy from Shed210?" section.
+ * Kept in the components layer so Tailwind utilities can still override them.
+ */
+@layer components {
+  .shop-pegboard {
+    --pegboard: #cfa576;
+    --pegboard-hole: rgb(72 43 19 / 0.5);
+    --shop-ink: #1f1912;
+    background-color: var(--pegboard);
+    background-image:
+      radial-gradient(circle, var(--pegboard-hole) 0 2.5px, transparent 3px),
+      linear-gradient(180deg, rgb(255 255 255 / 0.1), rgb(70 40 15 / 0.08));
+    background-size: 28px 28px, 100% 100%;
+    background-position: 14px 14px, 0 0;
+  }
+
+  /* Card-stock price tag with an orange header band. Phones: hangs sideways with the
+     band and hole on the left. sm+: hangs from the top. */
+  .shop-tag {
+    --tag-band: 44px;
+    --tag-chamfer: 16px;
+    background: linear-gradient(to right, var(--accent) 0 var(--tag-band), #fffdf7 var(--tag-band));
+    clip-path: polygon(
+      var(--tag-chamfer) 0,
+      100% 0,
+      100% 100%,
+      var(--tag-chamfer) 100%,
+      0 calc(100% - var(--tag-chamfer)),
+      0 var(--tag-chamfer)
+    );
+  }
+
+  .shop-tag-wrap {
+    filter: drop-shadow(0 6px 8px rgb(62 36 14 / 0.35));
+  }
+
+  @media (width >= 40rem) {
+    .shop-tag {
+      --tag-band: 48px;
+      --tag-chamfer: 22px;
+      background: linear-gradient(to bottom, var(--accent) 0 var(--tag-band), #fffdf7 var(--tag-band));
+      clip-path: polygon(
+        var(--tag-chamfer) 0,
+        calc(100% - var(--tag-chamfer)) 0,
+        100% var(--tag-chamfer),
+        100% 100%,
+        0 100%,
+        0 var(--tag-chamfer)
+      );
+    }
+
+    /* A slight hang angle, pivoting on the peg. */
+    .shop-tag-wrap {
+      transform-origin: 50% 24px;
+      rotate: var(--tag-tilt, 0deg);
+    }
+  }
+
+  /* Punched hole with a paper reinforcement ring, and the steel peg it hangs on. */
+  .shop-tag-hole {
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    background:
+      radial-gradient(circle at 50% 36%, #f6f6f4 0 1.2px, #b1b0ab 3px, #6f6e69 4.3px, transparent 4.8px),
+      var(--pegboard);
+    box-shadow: 0 0 0 3px #f1e9da, inset 0 1px 2px rgb(0 0 0 / 0.45);
+  }
+
+  /* Embossed label-maker tape. */
+  .label-tape {
+    display: inline-block;
+    padding: 0.3rem 0.85rem 0.35rem;
+    background: var(--shop-ink, #1f1912);
+    color: #fbf8f2;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 rgb(0 0 0 / 0.6), 0 -1px 0 rgb(255 255 255 / 0.18);
+    box-shadow: 0 2px 3px rgb(62 36 14 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.12);
+    border-radius: 2px;
+  }
+}

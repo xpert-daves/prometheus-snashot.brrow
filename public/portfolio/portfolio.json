@@ -1,0 +1,46 @@
+[
+  {
+    "src": "/portfolio/IMG_6287.jpeg",
+    "alt": "Custom metal storage shed with gable roof built on-site in a San Antonio backyard.",
+    "caption": "San Antonio gable-roof storage shed build",
+    "city": "San Antonio",
+    "projectType": "Gable-roof storage shed",
+    "size": "Mid-size backyard footprint",
+    "useCase": "lawn equipment and seasonal storage",
+    "features": ["Metal roof", "Painted trim", "Backyard placement"],
+    "areaNote": "Customer-safe city-level location only"
+  },
+  {
+    "src": "/portfolio/IMG_6288.jpeg",
+    "alt": "Large backyard utility shed with double doors and trim detailing in Bexar County.",
+    "caption": "Backyard utility shed with upgraded doors",
+    "city": "San Antonio",
+    "projectType": "Backyard utility shed",
+    "size": "Large storage footprint",
+    "useCase": "tools, outdoor gear, and overflow home storage",
+    "features": ["Double doors", "Trim detailing", "Utility layout"],
+    "areaNote": "Bexar County project shown without a street address"
+  },
+  {
+    "src": "/portfolio/IMG_6289.jpeg",
+    "alt": "One-day custom shed build with painted exterior and metal roof near Schertz, Texas.",
+    "caption": "One-day custom shed build near Schertz",
+    "city": "Schertz",
+    "projectType": "One-day custom shed",
+    "size": "Compact backyard footprint",
+    "useCase": "everyday backyard storage",
+    "features": ["Painted exterior", "Metal roof", "One-day build"],
+    "areaNote": "Nearby project shown at city level"
+  },
+  {
+    "src": "/portfolio/IMG_6290.jpeg",
+    "alt": "Finished custom storage shed with side-entry door and ventilation in a Texas backyard.",
+    "caption": "Custom side-entry storage shed project",
+    "city": "San Antonio",
+    "projectType": "Side-entry storage shed",
+    "size": "Medium storage footprint",
+    "useCase": "backyard organization with easier side access",
+    "features": ["Side-entry door", "Ventilation", "Painted exterior"],
+    "areaNote": "Customer-safe local project detail"
+  }
+]

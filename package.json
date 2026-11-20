@@ -1,0 +1,72 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.29.1",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "prebuild": "node scripts/strip-project-image-metadata.mjs",
+    "build": "pnpm run typecheck && next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "jest",
+    "typecheck": "tsc --noEmit",
+    "check:project-images": "node scripts/strip-project-image-metadata.mjs --check",
+    "crawl:site": "node scripts/crawl-built-site.mjs",
+    "new:article": "node scripts/new-article.js"
+  },
+  "dependencies": {
+    "@convex-dev/migrations": "0.3.4",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "@sentry/nextjs": "10.76.2",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
+    "clsx": "^2.1.1",
+    "convex": "1.43.0",
+    "lucide-react": "^1.66.0",
+    "next": "16.4.3",
+    "next-mdx-remote": "^6.0.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remark-gfm": "4.0.1",
+    "server-only": "0.0.1",
+    "three": "^0.187.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@testing-library/jest-dom": "7.0.0",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.20.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.1.11",
+    "@types/three": "^0.170.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.4.3",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.5.2",
+    "postcss": "8.5.32",
+    "tailwindcss": "^4.3.3",
+    "typescript": "6.0.3"
+  },
+  "browserslist": {
+    "production": [
+      "last 2 Chrome versions",
+      "last 2 Firefox versions",
+      "last 2 Safari versions",
+      "last 2 Edge versions"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

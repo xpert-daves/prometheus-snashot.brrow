@@ -1,0 +1,6 @@
+export const DELIVERY_ADDRESS_MAX_LENGTH = 255;
+export const QUOTE_DIMENSION_MIN_FT = 6;
+export const QUOTE_DIMENSION_MAX_FT = 40;
+export const QUOTE_LEAN_TO_MAX_WIDTH_FT = 16;
+export const QUOTE_WINDOW_COUNT_MIN = 1;
+export const QUOTE_WINDOW_COUNT_MAX = 20;

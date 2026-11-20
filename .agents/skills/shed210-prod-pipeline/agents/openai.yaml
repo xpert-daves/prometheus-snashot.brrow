@@ -1,0 +1,7 @@
+interface:
+  display_name: "Shed210 Production Pipeline"
+  short_description: "Verify Shed210 preview-to-prod readiness."
+  default_prompt: "Use $shed210-prod-pipeline to verify this Shed210 change is ready for Preview, Production, Convex, Twilio, admin QA, and migration safety."
+
+policy:
+  allow_implicit_invocation: true

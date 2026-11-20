@@ -1,0 +1,71 @@
+.toc {
+  color: var(--foreground);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.toggle {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.item {
+  margin: 0.15rem 0;
+}
+
+.level3 {
+  margin-left: 1.25rem;
+}
+
+.link {
+  color: color-mix(in oklab, var(--foreground) 85%, #000);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.4rem;
+  border-radius: 0.4rem;
+  transition: color 120ms ease, background-color 120ms ease;
+  font-size: 0.95rem;
+}
+
+.link:hover {
+  color: var(--foreground);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.level3 .link {
+  padding-left: 1rem;
+  color: color-mix(in oklab, var(--foreground) 70%, #000);
+  font-size: 0.95em;
+}
+
+.activeLink {
+  position: relative;
+  color: #0b0b0b;
+  background: var(--primary);
+  font-weight: 600;
+}
+
+.activeLink::before {
+  content: "";
+  position: absolute;
+  left: -0.5rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 35%, transparent);
+}

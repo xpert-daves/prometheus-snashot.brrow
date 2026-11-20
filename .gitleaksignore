@@ -1,0 +1,19 @@
+# Historical test fixture; the retired admin/auth code is no longer present.
+c28ca6b5983b88f345fd84df42c5093299f66b23:convex/__tests__/authOrigins.test.ts:generic-api-key:53
+
+# Historical NEXT_PUBLIC Supabase anon keys were intentionally browser-public.
+4bd7223f4bd64bd28905a2b263d42557ba8f19ce:.env.local.example:jwt:2
+db44ac9ea7e7ddce4a307632096d9f2c589dd725:.env.local.example:jwt:2
+a4069d5f60b08f07ec78b72cfbe5129b340ec94a:.env.local.example:jwt:2
+5a46c081591b8269762ee6308b56b4ce03ebc5a7:.env.local.example:jwt:2
+
+# Public localStorage names for measurement preferences and attribution, not credentials.
+f1c48bbede8f86f8579f6fe2b60cb82fba7d451a:src/lib/websiteMeasurement.ts:generic-api-key:5
+f1c48bbede8f86f8579f6fe2b60cb82fba7d451a:src/lib/websiteMeasurement.ts:generic-api-key:9
+
+# The same public localStorage names in the main-branch squash commit.
+f7a6390bdab4671d8416edc5d97b3e9a7a1134bc:src/lib/websiteMeasurement.ts:generic-api-key:5
+f7a6390bdab4671d8416edc5d97b3e9a7a1134bc:src/lib/websiteMeasurement.ts:generic-api-key:9
+
+# Public localStorage name for the Clarity opt-out preference, not a credential.
+57b2c1146d839b1c7668e0e84b4dd3164058d062:src/lib/clarity.ts:generic-api-key:1
