@@ -19,7 +19,7 @@
     "new:article": "node scripts/new-article.js"
   },
   "dependencies": {
-    "@convex-dev/migrations": "0.3.4",
+    "@convex-dev/migrations": "0.3.8",
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.2",
     "@sentry/nextjs": "10.76.2",
